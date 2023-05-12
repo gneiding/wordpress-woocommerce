@@ -1,20 +1,19 @@
 <?php
 /**
-* Plugin Name: Novo status no WooCommerce
+* Plugin Name: Novo status 'enviado' no WooCommerce
 * Plugin URI: https://www.piwebsites.com.br/contato
 * Description: Adiciona o status 'enviado' no WooCommerce com envio de e-mail para o cliente
-* Version: 1.0.0
+* Version: 0.97
 * Author: Ivan Meskauskas Gneiding
-* Author URI: https://www.piwebsites.com.br/
+* Author URI: https://github.com/gneiding/wordpress-woocommerce
 **/
 
 
 /**
- * Adiciona status extra de pedido no WooCommerce
+ * Adiciona status 'enviado' de pedido no WooCommerce com envio de email ao cliente
  **/
 
-
-function pi_register_enviado_status() {
+ function pi_register_enviado_status() {
 
 	register_post_status(
 		'wc-enviado',
@@ -28,6 +27,7 @@ function pi_register_enviado_status() {
 
 }
 add_action( 'init', 'pi_register_enviado_status' );
+
 
 
 
@@ -54,7 +54,7 @@ add_filter( 'wc_order_statuses', 'pi_add_enviado_to_list' );
 
 function pi_register_enviado_bulk_action( $bulk_actions ) {
 
-	$bulk_actions[ 'mark_enviado' ] = 'Mudar status para enviado';
+	$bulk_actions[ 'mark_enviado' ] = 'Mudar status para Enviado';
 	return $bulk_actions;
 
 }
@@ -87,7 +87,7 @@ function pi_bulk_process_custom_status( $redirect, $doaction, $object_ids ) {
 add_action( 'handle_bulk_actions-edit-shop_order', 'pi_bulk_process_custom_status', 20, 3 );
 
 
-//Configurando as cores do novo status
+//Configura as cores do novo status
 function pi_styling_admin_order_list() {
     global $pagenow, $post;
 
@@ -99,8 +99,8 @@ function pi_styling_admin_order_list() {
     ?>
     <style>
         .order-status.status-<?php echo sanitize_title( $order_status ); ?> {
-            background-color:  #FFADD2 !important;
-            color: #E90067 !important;
+            background-color:  #d7f8a7 !important;
+            color: #0c942b !important;
         }
     </style>
     <?php
@@ -108,25 +108,18 @@ function pi_styling_admin_order_list() {
 add_action('admin_head', 'pi_styling_admin_order_list' );
 
 
-//Faz envio de e-mail ao alterar status
+/*
+* Faz envio de e-mail ao alterar status
+*/
 function pi_send_mail_on_enviado($order_id, $checkout=null) {
    global $woocommerce;
    $order = new WC_Order( $order_id );
-    if($order->status === 'enviado' ) { 
-       
-      if(str_contains(trim(strtolower($order->get_shipping_method())), 'correios')) {
-        $texto_entrega = '<br/>Você receberá um email informando o código de rastreio via Melhor Rastreio.';
-      } elseif(str_contains(trim(strtolower($order->get_shipping_method())), 'jadlog')) {
-        $texto_entrega = '<br/>Seu pedido foi enviado pela jad log, você pode acompanhar a entrega pelo site: <a href="https://www.jadlog.com.br/tracking" target="_blank">https://www.jadlog.com.br/tracking</a> informando o seu cpf.';
-      } else {
-        $texto_entrega = '<br/>Se seu pedido foi enviado pela jad log, você pode acompanhar a entrega pelo site: <a href="https://www.jadlog.com.br/tracking" target="_blank">https://www.jadlog.com.br/tracking</a> informando o seu cpf. Caso tenha escolhido envio pelo correios, você receberá um email informando o código de rastreio via melhor rastreio';
-      }
-       
+    if($order->status === 'enviado' ) {       
         // Cria o envio
       $mailer = $woocommerce->mailer();
 
-      $message_body = __( '<p>Olá ' . ucfirst($order->get_billing_first_name()) . ', o pedido <strong>#'. $order->get_order_number() .'</strong> acaba de ser enviado.</p>
-       <p><strong>Forma de entrega:</strong> ' . $order->get_shipping_method() . $texto_entrega . '</p>
+      $message_body = __( '<p>Olá ' . ucfirst($order->get_billing_first_name()) . ', o pedido <strong>#'. $order->get_order_number() .'</strong> acaba de ser enviado e já está a caminho.</p>
+       <p><strong>Forma de entrega:</strong> ' . $order->get_shipping_method() . '</p>
        <p><strong>Detalhes do pedido:</strong> <a href="' . $order->get_view_order_url() .'" target="_blank">clique aqui</a></p> 
        <p><strong>Detalhes de envio:</strong><br/>' . $order->get_formatted_shipping_address() . '</p>
        <p><strong>Obrigado por comprar conosco!</strong></p>' );
