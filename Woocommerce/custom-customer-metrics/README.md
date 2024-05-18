@@ -59,6 +59,12 @@ O plugin Custom Customer Metrics for WooCommerce permite que clientes de produto
    - O plugin cria automaticamente uma página chamada "Métricas" com o slug "metricas" ao ser ativado.
    - Clientes podem acessar essa página para visualizar as métricas de vendas de seus produtos.
 
+4. **Usar o Shortcode em Outras Páginas**:
+   - Caso necessário, você pode adicionar o shortcode `[metricas_venda_cliente]` em qualquer página existente ou nova.
+   - Para fazer isso, edite a página desejada e insira o shortcode `[metricas_venda_cliente]` no conteúdo da página onde você quer que as métricas apareçam.
+
+## Contribuição
+
 ## Suporte
 
 Para suporte, entre em contato com o autor através do [site do autor](https://www.piwebsites.com.br).
