@@ -1,7 +1,7 @@
 # Custom Customer Metrics for WooCommerce
 
 **Plugin Name:** Custom Customer Metrics for WooCommerce  
-**Plugin URI:** https://github.com/gneiding/wordpress-woocommerce/tree/main/Woocommerce/custom-customer-metrics
+**Plugin URI:** https://github.com/gneiding/wordpress-woocommerce/tree/main/Woocommerce/custom-customer-metrics  
 **Description:** Permite que clientes de produtos visualizem suas métricas de vendas no WooCommerce.  
 **Version:** 1.0  
 **Author:** Ivan Meskauskas Gneiding  
